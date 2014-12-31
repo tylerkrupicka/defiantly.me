@@ -1,0 +1,26 @@
+
+<li class="list-group-item tool-listing clearfix">
+    <div class="row">
+        <div class="col-sm-6">
+            <p class="list-group-item-text"><strong>Against: <b><a href="/users/{{infraction.userAtFault.username}}/" title="Visit this user's profile page">{{ infraction.userAtFault.username }}</a></b><br>
+                Submitted by: <b><a href="/users/{{ infraction.userWronged.username }}/" title="Visit this user's profile page">{{ infraction.userWronged.username }}</a></b></strong><br>
+                <div class="list-group-item-text"><strong>Date: {{ infraction.date }}</strong></div>
+                {% if infraction.length < 30 %}
+                <a class="list-group-item-text" href="/admin/infraction/{{ infraction.id }}/"><b>Description:</b> {{ infraction.description }}</a>
+                {% else %}
+                <a class="list-group-item-text" href="/admin/infraction/{{ infraction.id }}/"><b>Description:</b> {{ infraction.short }}...</a>
+                {% endif %}
+            </p>
+        </div>
+        <div class="col-sm-6 center-inline clearfix tool-actions">
+            {% if archived == False %}
+            <p class="center-inline">Has this been dealt with?</p>
+            <a href="/admin/infraction/{{ infraction.id }}/archive/" class="btn btn-default"><i class="fa fa-trash"></i> Archive report</a>
+            {% else %}
+            <p class="center-inline">Is this a current issue?</p>
+            <a href="/admin/infraction/{{ infraction.id }}/restore/" class="btn btn-success"><i class="fa fa-check"></i> Restore report</a>
+
+            {% endif %}
+        </div>
+    </div>
+</li>

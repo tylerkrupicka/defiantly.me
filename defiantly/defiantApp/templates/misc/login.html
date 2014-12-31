@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block title %}Log in{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="well clearfix">
+                <h3 class="center-inline">Log In</h3>
+                {% if form.non_field_errors %}
+                    {% for non_field_error in form.non_field_errors %}
+                    <div class="alert alert-danger {% if non_field_error.tags %}{{ non_field_error.tags }}{% endif %}">{{ non_field_error }}</div>
+                    {% endfor %}
+                {% endif %}
+                {% if messages %}
+                    {% for message in messages %}
+                <div class="alert alert-info {% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+                <form class="form-horizontal" method="post" action="">{% csrf_token %}
+                    {% include "form-fields.html" with form=form %}
+                    <div class="form-actions">
+                    	<a href="/">
+                        <button type="button" class="btn btn-link pull-left">Register for an account</button>
+                        </a>
+                        <button type="submit" class="btn btn-primary pull-right">Log in</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+

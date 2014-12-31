@@ -1,3 +1,16 @@
+import tweepy
+import nltk
+from keys import keys
+
+CONSUMER_KEY = keys['consumer_key']
+CONSUMER_SECRET = keys['consumer_secret']
+ACCESS_TOKEN = keys['access_token']
+ACCESS_TOKEN_SECRET = keys['access_token_secret']
+
+auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+api = tweepy.API(auth)
+
 """
 Django settings for defiantly project.
 
@@ -82,3 +95,142 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+
+class Defiant:
+
+    def __init__(self):
+        #initialize class variables
+        self.query = 'defiantly'
+        self.record = 0
+        self.recordHolder = " "
+        self.corpusFile = "corpus.txt"
+        self.correctFile = "correct.txt"
+        self.incCorpus = []
+        self.corCorpus = []
+        self.taggedCorpus = []
+        self.classifier = ""
+
+    def main(self):
+        print "loading corpus and creating classifier"
+        self.createClassifier()
+        return self.classifier
+
+    def createData(self):
+        #read incorrect corpus
+        c = open(self.corpusFile)
+        inc = c.readlines()
+        c.close
+
+        #remove special characters, users, and newlines
+        for line in inc:
+            #clean characters
+            valid_chars = ' @abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+            line = ''.join(c for c in line if c in valid_chars)
+            line = line.strip()
+            #save to incorrect corpus
+            if len(line) != 0 and len(line) != 1:
+                sp = line.split()
+                if len(sp) == 0 or len(sp) == 1:
+                    pass
+                else:
+                    self.incCorpus.append(sp)
+            #remove user names
+            for sentence in self.incCorpus:
+                for word in sentence:
+                    if word[0] == "@":
+                        sentence.remove(word)
+
+        #correct tweets
+        c = open(self.correctFile)
+        cor = c.readlines()
+        c.close
+
+        #remove special characters, users, and newlines
+        for line in cor:
+            #clean characters
+            valid_chars = ' @abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+            line = ''.join(c for c in line if c in valid_chars)
+            line = line.strip()
+            #save to incorrect corpus
+            if len(line) != 0 and len(line) != 1:
+                sp = line.split()
+                if len(sp) == 0 or len(sp) == 1:
+                    pass
+                else:
+                    self.corCorpus.append(sp)
+            #remove user names
+            for sentence in self.corCorpus:
+                for word in sentence:
+                    if word[0] == "@":
+                        sentence.remove(word)
+
+    def cleanText(self,text):
+        valid_chars = ' @abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+        text = ''.join(c for c in text if c in valid_chars)
+        text = text.strip()
+        #remove user names
+        sent = text.split()
+        for word in sent:
+            if word[0] == "@":
+                sent.remove(word)
+        clean = " "
+        return clean.join(sent)    
+
+    def generateFeatures(self,tweet):
+        index = 0
+        features = {}
+        #get index
+        for i in range(0,len(tweet)):
+            if tweet[i] == self.query:
+                index = i
+        pos = nltk.pos_tag(tweet)
+        #previous word feature
+        if index != 0:
+            previousWord = tweet[index-1]
+            token = pos[index-1]
+            features['previousWord'] = previousWord
+            #previous letter
+            features['previousWordEndL'] = previousWord[-1]
+            features['previousWordPos'] = token[1]
+        else:
+            features['previousWord'] = "none"
+            features['previousWordEndL'] = "none"
+            features['previousWordPos'] = "none"
+        
+        #next word feature
+        if index < len(tweet)-1:
+            #print str(index) + " " + str(len(tweet))
+            nextWord = tweet[index + 1]
+            token = pos[index+1]
+            features['nextWord'] = nextWord
+            features['nextWordEndL'] = nextWord[-1]
+            features['nextWordPos'] = token[1]
+        else:
+            features['nextWord'] = "none"
+            features['nextWordEndL'] = "none"
+            features['nextWordPos'] = "none"
+
+        return features
+
+    def createClassifier(self):
+        self.createData()
+        #create training corpus
+        for tweet in self.incCorpus:
+            self.taggedCorpus.append((self.generateFeatures(tweet),'incorrect'))
+        for tweet in self.corCorpus:
+            self.taggedCorpus.append((self.generateFeatures(tweet),'correct'))  
+
+        self.classifier = nltk.NaiveBayesClassifier.train(self.taggedCorpus)
+
+    def testClassifier(self):
+        self.createClassifier()
+        print "tested accuracy: " + str((nltk.classify.accuracy(self.classifier, self.taggedCorpus)))
+        while True:
+            phrase = ""
+            phrase = raw_input("Enter Phrase to Classify: ")
+            phrase = phrase.split()
+            print phrase
+            print self.classifier.classify(self.generateFeatures(phrase))
+
+CLASSIFIER = Defiant().main()
+print "completed"

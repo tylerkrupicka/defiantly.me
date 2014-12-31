@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block title %}Add a Tool{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="well clearfix">
+                <h3 class="center-inline">Add a Tool</h3>
+                {%include "messages.html" with messages=messages %}
+                <form class="form-horizontal" method="POST" action=""> {% csrf_token %}
+                    {% include "form-fields.html" with form=form classes="col-md-6" %}
+                    <div class="form-group row col-md-6">
+                        <button type="submit" class="btn btn-primary pull-right">Add Tool</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
