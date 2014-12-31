@@ -2803,8 +2803,8 @@ fieldset[disabled] .btn-default.active {
 }
 .btn-primary {
   color: #ffffff;
-  background-color: #dd4814;
-  border-color: #dd4814;
+  background-color: #1597D4;
+  border-color: #1597D4;
 }
 .btn-primary:hover,
 .btn-primary:focus,
@@ -4175,8 +4175,8 @@ fieldset[disabled] .navbar-default .btn-link:focus {
   color: #cccccc;
 }
 .navbar-inverse {
-  background-color: #772953;
-  border-color: #511c39;
+  background-color: #00283B;
+  border-color: #00283B;
 }
 .navbar-inverse .navbar-brand {
   color: #ffffff;

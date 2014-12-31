@@ -24,8 +24,10 @@ def index(request):
         if(badTweet.objects.filter(tweetId=tweet.id).exists()):
             pass
         else:
-            bad = badTweet(tweetId=tweet.id,user=tweet.user.screen_name,followers=tweet.user.followers_count)
+            bad = badTweet(tweetId=tweet.id,user=tweet.user.screen_name,followers=tweet.user.followers_count,tweetText=tweet.text)
             bad.save()
+    tweetNum = len(badTweet.objects.all())
+    badTweets = badTweet.objects.order_by('-followers', 'tweetId')[:10]
     return render(request, "index.html", locals())
 
 
@@ -56,7 +58,6 @@ def pollForTweets():
         elif "definitely" in tweet.text:
             pass
         else:
-            print tweet.id
             tweets.append(tweet)
     return tweets
 

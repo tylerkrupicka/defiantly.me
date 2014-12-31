@@ -1,9 +1,0 @@
-{% extends "layout.html" %}
-{% block title %}Tool{% endblock %}
-{% block body %}
-<div class="well">
-    <h2>{{tool.name}}</h2>
-    <h3>Brand: {{ tool.brand }} | Condition: {{ tool.condition }}</h3>
-</div>
-{% include "tools/listing.html" with tool=tool%}
-{% endblock %}
