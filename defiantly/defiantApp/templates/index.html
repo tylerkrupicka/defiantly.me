@@ -3,21 +3,21 @@
 {% block body %}
 	<div class="jumbotron">
       <div class="container">
+	<br />
         <h1>We're Defiantly Online!</h1>
         <h3><b>{{tweetNum}}</b> saved misuses and counting.</h3>
-        <p>This website uses machine learning to display the (pretty widespread) misuse of the word "defiantly" on twitter. Recents shows the most recent tweets, while top shows people with the most followers. Tweets are polled when this site is loaded. If your interested in how it works, here's a writeup.</p>
-        <p><a class="btn btn-primary btn-md" href="http://tylerkrupicka.com/blog/Defiant-Lee-A-Naive-Bayes-Twitter-Bot.html" role="button">Learn more &raquo;</a></p>
+        <p>This website uses machine learning to display the (pretty widespread) misuse of the word "defiantly" on twitter. "Recents" shows the most recent tweets, while "top" shows people with the most followers. Tweets are polled when this site is loaded. If you are interested in how it works, here's some links: <a href="https://twitter.com/DefiantLee_/with_replies">@DefiantLee_</a> <a href="http://tylerkrupicka.com/blog/Defiant-Lee-A-Naive-Bayes-Twitter-Bot.html">Classifier</a>.</p>
+        <p><a class="btn btn-primary btn-md" href="http://tylerkrupicka.com/blog/defiantly.me.html" role="button">Official Writeup &raquo;</a></p>
       </div>
     </div>
 
     <div class="container">
 	    <div class="col-md-6">
-	    	<h2>Recents</h2>
+	    	<h2>Recent {{recentsN}}</h2>
 			<span style="marigin-left:auto;marigin-right:auto;padding-bottom:0px;">            
 		    {% for tweet in tweets %}
 			<blockquote class="twitter-tweet" lang="en"><p>{{tweet.text}}</p>&mdash;
-	 		Defiant Lee (@DefiantLee_) <a href="https://twitter.com/{{tweet.user.screen_name}}/status/{{tweet.id}}">
-			October 14, 2014</a>
+	 		{{tweet.user.screen_name}} <a href="https://twitter.com/{{tweet.user.screen_name}}/status/{{tweet.id}}">This tweet has been removed.</a>
 			</blockquote>
 			<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 		    {% endfor %}
@@ -25,12 +25,11 @@
 		</div>
 
 	    <div class="col-md-6">
-	    	<h2>Top</h2>
+	    	<h2>Top 20</h2>
 			<span style="marigin-left:auto;marigin-right:auto;padding-top:0px;">            
 		    {% for tweet in badTweets %}
 			<blockquote class="twitter-tweet" lang="en"><p>{{tweet.tweetText}}</p>&mdash;
-	 		Defiant Lee (@DefiantLee_) <a href="https://twitter.com/{{tweet.user}}/status/{{tweet.tweetId}}">
-			October 14, 2014</a>
+	 		{{tweet.user}} <a href="https://twitter.com/{{tweet.user}}/status/{{tweet.tweetId}}">This tweet has been removed.</a>
 			</blockquote>
 			<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 		    {% endfor %}

@@ -7,9 +7,22 @@
     <link rel="icon" href="/static/favicon.ico">
 
     <title>{% block title%}{% endblock%}</title>
+	
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-58161157-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+ </script>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="/static/bootstrap.css">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/style.css">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
@@ -34,7 +47,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#"><b>defiantly</b></a>
+          <a class="navbar-brand" href="#"><b><span style="color:white;">defiantly.me</span></b></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
         </div><!--/.navbar-collapse -->

@@ -1,5 +1,6 @@
 import tweepy
 import nltk
+import os
 from keys import keys
 
 CONSUMER_KEY = keys['consumer_key']
@@ -73,9 +74,8 @@ WSGI_APPLICATION = 'defiantly.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),}
     }
-}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
@@ -103,8 +103,8 @@ class Defiant:
         self.query = 'defiantly'
         self.record = 0
         self.recordHolder = " "
-        self.corpusFile = "corpus.txt"
-        self.correctFile = "correct.txt"
+        self.corpusFile = "/home/django/defiantly/defiantly/corpus.txt"
+        self.correctFile = "/home/django/defiantly/defiantly/correct.txt"
         self.incCorpus = []
         self.corCorpus = []
         self.taggedCorpus = []
@@ -232,5 +232,6 @@ class Defiant:
             print phrase
             print self.classifier.classify(self.generateFeatures(phrase))
 
+print os.path.dirname(os.path.abspath(__file__))
 CLASSIFIER = Defiant().main()
 print "completed"

@@ -19,7 +19,9 @@ classifier = settings.CLASSIFIER
 # Create your views here.
 def index(request):
     #clear tweets array
+    remove = ["Refugees"]
     tweets = pollForTweets()
+    recentN = len(tweets)
     for tweet in tweets:
         if(badTweet.objects.filter(tweetId=tweet.id).exists()):
             pass
@@ -27,7 +29,7 @@ def index(request):
             bad = badTweet(tweetId=tweet.id,user=tweet.user.screen_name,followers=tweet.user.followers_count,tweetText=tweet.text)
             bad.save()
     tweetNum = len(badTweet.objects.all())
-    badTweets = badTweet.objects.order_by('-followers', 'tweetId')[:10]
+    badTweets = badTweet.objects.order_by('-followers', 'tweetId').exclude(user='Refugees')[:20]
     return render(request, "index.html", locals())
 
 
